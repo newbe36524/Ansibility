@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.Threading.Tasks;
 using Ansibility.Web.ApiModels;
-using Ansibility.Web.Common;
-using Ansibility.Web.Options;
+using Ansibility.Web.Common.Mvc.Attributes;
+using Ansibility.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ansibility.Web.Controllers.Apis
@@ -10,24 +9,20 @@ namespace Ansibility.Web.Controllers.Apis
     [SmallCamelRoute(nameof(TasksController))]
     public class TasksController : Controller
     {
-        private readonly AnsibilityOptions _options;
+        private readonly ITaskCenter _taskCenter;
 
-        public TasksController(IOptions<AnsibilityOptions> options)
+        public TasksController(ITaskCenter taskCenter)
         {
-            _options = options.Options;
+            _taskCenter = taskCenter;
         }
 
         [HttpPost]
-        public IdModel Post([FromBody] AnsibilityTask task)
+        public async Task<IdModel> Post([FromBody] AnsibilityTask task)
         {
-            var id = Guid.NewGuid().ToString();
-            var basePath = Path.Combine(_options.WorkingDirectory, id);
-            DirectoryExtensions.CreateIfNotExsist(basePath);
-            System.IO.File.AppendAllText(Path.Combine(basePath, nameof(task.Playbook)), task.Playbook);
-            System.IO.File.AppendAllText(Path.Combine(basePath, nameof(task.Inventory)), task.Inventory);
+            var taskid = await _taskCenter.AddTaskAsync(task);
             return new IdModel
             {
-                Id = id,
+                Id = taskid,
             };
         }
     }

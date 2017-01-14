@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Ansibility.Web.Common
+namespace Ansibility.Web.Common.Mvc.Attributes
 {
     public class SmallCamelRouteAttribute : RouteAttribute
     {

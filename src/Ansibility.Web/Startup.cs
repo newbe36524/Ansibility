@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using Ansibility.Web.Ansible;
+using Ansibility.Web.Services.Impl;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +34,7 @@ namespace Ansibility.Web
             // Add framework services.
             services.AddMvc();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "Asnsibility API", Version = "v1"}); });
+            services.AddLogging();
 
             // Create the container builder.
             var builder = new ContainerBuilder();
@@ -41,16 +44,20 @@ namespace Ansibility.Web
             // to dispose of the container at the end of the app,
             // be sure to keep a reference to it as a property or field.
             builder.RegisterAssemblyTypes(Assembly.Load(new AssemblyName("Ansibility.Web"))).AsImplementedInterfaces();
+            builder.RegisterType<TaskCenter>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
             builder.Populate(services);
             this.ApplicationContainer = builder.Build();
 
             // Create the IServiceProvider based on the container.
-            return new AutofacServiceProvider(this.ApplicationContainer);
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var loggerFactory = ApplicationContainer.Resolve<ILoggerFactory>();
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
