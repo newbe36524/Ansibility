@@ -1,6 +1,6 @@
 ﻿namespace Ansibility.Web.Common
 {
-    public class Constants
+    public static class Constants
     {
         public const string ApiPathBase = "api/";
     }

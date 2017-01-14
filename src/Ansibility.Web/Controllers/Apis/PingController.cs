@@ -1,9 +1,10 @@
 ﻿using System;
+using Ansibility.Web.Common;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ansibility.Web.Controllers
+namespace Ansibility.Web.Controllers.Apis
 {
-    [Route("api/[controller]")]
+    [SmallCamelRoute(nameof(PingController))]
     public class PingController : Controller
     {
         [HttpPost]

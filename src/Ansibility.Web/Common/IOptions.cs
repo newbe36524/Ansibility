@@ -4,7 +4,7 @@
     {
     }
 
-    public interface IOptions<out T> where T : IOptions
+    public interface IOptions<out T> : IOptions where T : IOptions
     {
         T Options { get; }
     }
