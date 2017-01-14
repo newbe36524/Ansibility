@@ -1,4 +1,4 @@
-﻿FROM ansi
+﻿FROM ansi:1.1.0
 ENTRYPOINT ["dotnet", "Ansibility.dll"]
 ARG source=out 
 WORKDIR /app
