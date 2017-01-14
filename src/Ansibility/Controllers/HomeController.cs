@@ -28,21 +28,30 @@ namespace Ansibility.Controllers
             return View();
         }
 
-        public IActionResult TestConsole()
+        public IActionResult TestConsole(string prc, string q)
         {
             var process = new Process
             {
-                StartInfo = new ProcessStartInfo("dotnet")
+                StartInfo = new ProcessStartInfo(prc)
                 {
-                    UseShellExecute =false,
+                    UseShellExecute = false,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = q
                 }
-                
             };
             process.Start();
-            var output = process.StandardOutput.ReadLine();
+            var readToEnd = process.StandardOutput.ReadToEnd();
+            var allLines = !string.IsNullOrEmpty(readToEnd) ? readToEnd : process.StandardError.ReadToEnd();
+            ViewBag.Raw = allLines;
             process.WaitForExit();
-            return View(output);
+            var re = new List<string>();
+            foreach (var line in allLines.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+            {
+                re.Add(line);
+            }
+            ViewBag.Output = re;
+            return View();
         }
 
         public IActionResult Error()

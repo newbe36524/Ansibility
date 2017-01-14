@@ -6,4 +6,9 @@
 }
 
 <h2>title</h2>
-@Model
+@foreach (string re in ViewBag.Output)
+{
+    @re<br/>
+}
+<hr/>
+@ViewBag.Raw
