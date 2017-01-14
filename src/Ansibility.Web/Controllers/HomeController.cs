@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ansibility.Controllers
+namespace Ansibility.Web.Controllers
 {
     public class HomeController : Controller
     {

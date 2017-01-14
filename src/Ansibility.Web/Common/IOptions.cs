@@ -1,4 +1,4 @@
-﻿namespace Ansibility.Common
+﻿namespace Ansibility.Web.Common
 {
     public interface IOptions
     {

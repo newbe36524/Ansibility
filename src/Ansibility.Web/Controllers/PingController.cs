@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ansibility.Controllers
+namespace Ansibility.Web.Controllers
 {
     [Route("api/[controller]")]
     public class PingController : Controller
