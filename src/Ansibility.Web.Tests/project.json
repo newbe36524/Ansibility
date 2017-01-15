@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0-*",
+  "testRunner": "xunit",
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "version": "1.1.0",
+      "type": "platform"
+    },
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "Newtonsoft.Json": "9.0.1",
+    "RestClient": "2.0.4",
+    "xunit": "2.2.0-beta4-build3444",
+    "xunit.runner.console": "2.2.0-beta4-build3444",
+    "xunit.runner.visualstudio": "2.2.0-beta4-build1194"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  }
+}

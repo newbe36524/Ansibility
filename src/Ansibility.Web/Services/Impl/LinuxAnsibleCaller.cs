@@ -11,6 +11,10 @@ namespace Ansibility.Web.Services.Impl
     {
         private readonly ICmdCaller _cmdCaller;
         private readonly AnsibilityOptions _options;
+        private CmdResult _cmdResult;
+        private string _taskId;
+
+        bool IAnsibleCaller.IsFinished => _cmdCaller.CmdState == CmdState.Stopped;
 
         public LinuxAnsibleCaller(ICmdCaller cmdCaller, IOptions<AnsibilityOptions> options)
         {
@@ -18,10 +22,10 @@ namespace Ansibility.Web.Services.Impl
             _options = options.Options;
         }
 
-        async Task<PlaybookResult> IAnsibleCaller.ExecutePlaybookAsync(string playbook, string inventory)
+        async Task<string> IAnsibleCaller.ExecutePlaybookAsync(string playbook, string inventory)
         {
-            var id = Guid.NewGuid().ToString();
-            var basePath = Path.Combine(_options.WorkingDirectory, id);
+            _taskId = Guid.NewGuid().ToString();
+            var basePath = Path.Combine(_options.WorkingDirectory, _taskId);
             DirectoryExtensions.CreateIfNotExsist(basePath);
             var playbookPath = Path.Combine(basePath, $"{nameof(playbook)}.yml");
             await CreateNotExecuteFile(playbookPath, playbook);
@@ -30,17 +34,31 @@ namespace Ansibility.Web.Services.Impl
             var argb = new CmdArgumentBuilder(Path.GetFullPath(playbookPath), "-i", Path.GetFullPath(inventoryPath));
             try
             {
-                var cmdResult = await _cmdCaller.CallAsync("/usr/bin/ansible-playbook", argb.Build());
-                return new PlaybookResult
-                {
-                    TaskId = id,
-                    Raw = cmdResult,
-                };
+                _cmdResult = await _cmdCaller.CallAsync("/usr/bin/ansible-playbook", argb.Build());
+                return _taskId;
             }
             catch (FileNotFoundException e)
             {
                 throw new AnsibleNotInstalledException("/usr/bin/ansible-playbook", e);
             }
+        }
+
+        async Task<PlaybookResult> IAnsibleCaller.GetResultAsync(string taskId)
+        {
+            if (taskId != _taskId)
+            {
+                throw new ArgumentOutOfRangeException(nameof(taskId));
+            }
+            var re = await _cmdResult.StandardOutput.ReadToEndAsync();
+            if (string.IsNullOrEmpty(re))
+            {
+                re = await _cmdResult.StandardError.ReadToEndAsync();
+            }
+            return await Task.FromResult(new PlaybookResult
+            {
+                TaskId = taskId,
+                Raw = re,
+            });
         }
 
         async Task CreateNotExecuteFile(string fullFilePath, string content)

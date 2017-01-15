@@ -13,14 +13,21 @@ namespace Ansibility.Web.Services.Impl
             _logger = logger;
         }
 
-        async Task<PlaybookResult> IAnsibleCaller.ExecutePlaybookAsync(string playbook, string inventory)
+        async Task<string> IAnsibleCaller.ExecutePlaybookAsync(string playbook, string inventory)
         {
             _logger.LogInformation($"debug call \r\nplaybook:{playbook}\r\ninventory:{inventory}");
+            return await Task.FromResult(Guid.NewGuid().ToString());
+        }
+
+        async Task<PlaybookResult> IAnsibleCaller.GetResultAsync(string taskId)
+        {
             return await Task.FromResult(new PlaybookResult
             {
-                TaskId = Guid.NewGuid().ToString(),
+                TaskId = taskId,
                 Raw = "debugger ansible caller",
             });
         }
+
+        bool IAnsibleCaller.IsFinished => true;
     }
 }

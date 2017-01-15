@@ -4,6 +4,7 @@ namespace Ansibility.Web.Services
 {
     public interface ICmdCaller
     {
-        Task<string> CallAsync(string process, string arguments);
+        Task<CmdResult> CallAsync(string process, string arguments);
+        CmdState CmdState { get; }
     }
 }
