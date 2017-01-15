@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Ansibility.Web.Common;
+using Ansibility.Web.Exceptions;
 using Ansibility.Web.Options;
 using Ansibility.Web.Services;
 
@@ -24,15 +25,36 @@ namespace Ansibility.Web.Ansible.Impl
             var basePath = Path.Combine(_options.WorkingDirectory, id);
             DirectoryExtensions.CreateIfNotExsist(basePath);
             var playbookPath = Path.Combine(basePath, $"{nameof(playbook)}.yml");
-            File.AppendAllText(playbookPath, playbook);
-            File.AppendAllText(Path.Combine(basePath, nameof(inventory)), inventory);
-            var argb = new CmdArgumentBuilder(Path.GetFullPath(playbookPath), "-i", Path.GetFullPath(inventory));
-            var cmdResult = await _cmdCaller.CallAsync("/usr/bin/ansible-playbook", argb.Build());
-            return new PlaybookResult
+            await CreateNotExecuteFile(playbookPath, playbook);
+            var inventoryPath = Path.Combine(basePath, nameof(inventory));
+            await CreateNotExecuteFile(inventoryPath, inventory);
+            var argb = new CmdArgumentBuilder(Path.GetFullPath(playbookPath), "-i", Path.GetFullPath(inventoryPath));
+            try
             {
-                TaskId = id,
-                Raw = cmdResult,
-            };
+                var cmdResult = await _cmdCaller.CallAsync("/usr/bin/ansible-playbook", argb.Build());
+                return new PlaybookResult
+                {
+                    TaskId = id,
+                    Raw = cmdResult,
+                };
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new AnsibleNotInstalledException("/usr/bin/ansible-playbook", e);
+            }
+        }
+
+        async Task CreateNotExecuteFile(string fullFilePath, string content)
+        {
+            using (var fs = new FileStream(fullFilePath, FileMode.CreateNew, FileAccess.Write))
+            {
+                using (var sw = new StreamWriter(fs))
+                {
+                    await sw.WriteAsync(content);
+                }
+            }
+            var argb = new CmdArgumentBuilder("-x", fullFilePath);
+            await _cmdCaller.CallAsync("/bin/chmod", argb.Build());
         }
     }
 }
