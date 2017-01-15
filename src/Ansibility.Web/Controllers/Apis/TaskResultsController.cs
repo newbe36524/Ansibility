@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Ansibility.Web.Ansible;
 using Ansibility.Web.Common.Mvc.Attributes;
 using Ansibility.Web.Services;
 using Microsoft.AspNetCore.Mvc;

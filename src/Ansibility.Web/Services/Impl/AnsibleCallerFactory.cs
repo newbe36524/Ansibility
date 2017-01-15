@@ -1,11 +1,10 @@
 ﻿using System;
 using Ansibility.Web.Common;
 using Ansibility.Web.Options;
-using Ansibility.Web.Services;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
 
-namespace Ansibility.Web.Ansible.Impl
+namespace Ansibility.Web.Services.Impl
 {
     internal class AnsibleCallerFactory : IAnsibleCallerFactory
     {

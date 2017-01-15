@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Ansibility.Web.Ansible.Impl
+namespace Ansibility.Web.Services.Impl
 {
     internal class DebuggerAnsibleCaller : IAnsibleCaller
     {

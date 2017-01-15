@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ansibility.Web.Ansible
+namespace Ansibility.Web.Services
 {
     public interface IAnsibleCaller
     {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ansibility.Web.Ansible;
 using Ansibility.Web.ApiModels;
 
 namespace Ansibility.Web.Services.Impl

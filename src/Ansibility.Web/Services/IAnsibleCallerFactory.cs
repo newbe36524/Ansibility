@@ -1,4 +1,4 @@
-﻿namespace Ansibility.Web.Ansible
+﻿namespace Ansibility.Web.Services
 {
     public interface IAnsibleCallerFactory
     {

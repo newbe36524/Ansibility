@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Ansibility.Web.Ansible;
 using Ansibility.Web.Services.Impl;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;

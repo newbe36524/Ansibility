@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using Ansibility.Web.Common;
 using Ansibility.Web.Exceptions;
 using Ansibility.Web.Options;
-using Ansibility.Web.Services;
 
-namespace Ansibility.Web.Ansible.Impl
+namespace Ansibility.Web.Services.Impl
 {
     internal class LinuxAnsibleCaller : IAnsibleCaller
     {
