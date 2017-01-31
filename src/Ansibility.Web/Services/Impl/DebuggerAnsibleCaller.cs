@@ -15,7 +15,7 @@ namespace Ansibility.Web.Services.Impl
 
         async Task<string> IAnsibleCaller.ExecutePlaybookAsync(string playbook, string inventory)
         {
-            _logger.LogInformation($"debug call \r\nplaybook:{playbook}\r\ninventory:{inventory}");
+            _logger.LogInformation($"debug call {Environment.NewLine}playbook:{playbook}{Environment.NewLine}inventory:{inventory}");
             return await Task.FromResult(Guid.NewGuid().ToString());
         }
 
