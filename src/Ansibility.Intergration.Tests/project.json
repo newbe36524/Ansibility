@@ -9,11 +9,12 @@
       "type": "platform"
     },
     "Newtonsoft.Json": "9.0.1",
-    "xunit": "2.2.0-beta4-build3444",
-    "xunit.runner.console": "2.2.0-beta4-build3444",
-    "xunit.runner.visualstudio": "2.2.0-beta4-build1194",
     "Microsoft.DotNet.InternalAbstractions": "1.0.500-preview2-1-003177",
-    "FluentAssertions": "4.18.0" 
+    "xunit": "2.2.0-beta5-build3474",
+    "xunit.runner.console": "2.2.0-beta5-build3474",
+    "xunit.runner.visualstudio": "2.2.0-beta5-build1225",
+    "Autofac.Extras.Moq": "4.1.0-rc5-246",
+    "FluentAssertions": "4.18.0"
   },
 
   "frameworks": {
